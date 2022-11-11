@@ -1,0 +1,47 @@
+version: "3.4"
+
+services:
+  redis:
+    image: "redis:latest"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./redisdata:/usr/local/etc/redis/redis.conf
+    networks:
+      - backend
+   
+  postgresql: 
+    container_name:  postgres-db
+    image: "postgres"
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: khong123
+      POSTGRES_DB: postgres_bai1
+    networks:
+      - backend  
+    volumes:
+     - ./pgdata:/var/lib/postgresql/data
+
+  go:
+    container_name: go
+    build: 
+      context: .
+    networks:
+      - backend
+    depends_on:
+      - "redis"
+      - "postgresql"
+    
+networks:
+  backend:
+    driver: bridge
+
+# volumes:
+#   dataredis: 
+#     driver: local
+#   pgdata:
+#     driver: local
+
