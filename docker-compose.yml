@@ -29,12 +29,17 @@ services:
     container_name: go
     build: 
       context: .
+      dockerfile: dockerfile
     networks:
       - backend
+    volumes:
+      - ./.env:/.env
+    restart: always
     depends_on:
       - "redis"
       - "postgresql"
-    
+    extra_hosts:
+      - "postgres.demo.com:192.168.1.83"
 networks:
   backend:
     driver: bridge
