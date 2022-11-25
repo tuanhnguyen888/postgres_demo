@@ -1,0 +1,7 @@
+# data
+/data
+
+# go air
+/tmp
+.air.toml
+

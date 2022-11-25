@@ -207,7 +207,7 @@ func (r *Repository) GetGroupsByDepth(context *fiber.Ctx) error {
 	// Truy xuất dữ liệu trong bộ nhớ cache
 	// redis - connect
 	redisClient := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6380",
+		Addr:     "redis-db:6379",
 		Password: "",
 		DB:       0,
 	})
@@ -388,7 +388,7 @@ func main() {
 		Port:     os.Getenv("DB_PORT"),
 		Password: os.Getenv("DB_PASS"),
 		User:     os.Getenv("DB_USER"),
-		SSLMode:  os.Getenv("DB_SSQLMODE"),
+		SSLMode:  os.Getenv("DB_SSLMODE"),
 		DBName:   os.Getenv("DB_NAME"),
 	}
 

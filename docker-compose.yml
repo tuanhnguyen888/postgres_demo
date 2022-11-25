@@ -2,17 +2,18 @@ version: "3.4"
 
 services:
   redis:
+    container_name: redis-db
     image: "redis:latest"
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
       - "6380:6379"
     volumes:
-      - ./redisdata:/usr/local/etc/redis/redis.conf
+      - ./data/redisdata:/usr/local/etc/redis/redis.conf
     networks:
       - backend
    
   postgresql: 
-    container_name:  postgres-db
+    container_name: postgres-db
     image: "postgres"
     ports:
       - "5434:5432"
@@ -23,18 +24,25 @@ services:
     networks:
       - backend  
     volumes:
-     - ./pgdata:/var/lib/postgresql/data
+     - ./data/pgdata:/var/lib/postgresql/data
 
   go:
     container_name: go
     build: 
       context: .
+      dockerfile: dockerfile
     networks:
       - backend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./.env:/.env
+    restart: always
     depends_on:
       - "redis"
       - "postgresql"
-    
+    # extra_hosts:
+    #   - "postgres.demo.com:192.168.1.83"
 networks:
   backend:
     driver: bridge
